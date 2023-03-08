@@ -806,7 +806,7 @@ false posixrules
 13206||10|C|G
 13206||-9223372036854775808|U|G
 13206||10|U|G</Grants>
-      <IntrospectionStateNumber>737</IntrospectionStateNumber>
+      <IntrospectionStateNumber>739</IntrospectionStateNumber>
       <ObjectId>5</ObjectId>
       <OwnerName>app</OwnerName>
     </database>
@@ -4215,7 +4215,7 @@ false posixrules
     <schema id="262" parent="3" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>737</IntrospectionStateNumber>
+      <IntrospectionStateNumber>739</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>518</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>

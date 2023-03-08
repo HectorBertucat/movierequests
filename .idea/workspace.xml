@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b05e921d-b27c-4a46-b4eb-61262e3fa29e" name="Changes" comment="added user">
+    <list default="true" id="b05e921d-b27c-4a46-b4eb-61262e3fa29e" name="Changes" comment="added Movie and Request">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/092bf7ae-123f-4df7-9197-14c1d22b50b7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/092bf7ae-123f-4df7-9197-14c1d22b50b7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/092bf7ae-123f-4df7-9197-14c1d22b50b7/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/092bf7ae-123f-4df7-9197-14c1d22b50b7/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +59,7 @@
       <option name="presentableId" value="Default" />
       <updated>1678280863773</updated>
       <workItem from="1678280871071" duration="753000" />
-      <workItem from="1678282453476" duration="3345000" />
+      <workItem from="1678282453476" duration="3898000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1678280891576</created>
@@ -93,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678289239587</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added Movie and Request">
+      <created>1678289864197</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1678289864197</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -115,6 +125,7 @@
     <MESSAGE value="added database" />
     <MESSAGE value="added webapp" />
     <MESSAGE value="added user" />
-    <option name="LAST_COMMIT_MESSAGE" value="added user" />
+    <MESSAGE value="added Movie and Request" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Movie and Request" />
   </component>
 </project>
