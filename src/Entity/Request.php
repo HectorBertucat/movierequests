@@ -32,6 +32,11 @@ class Request
         return $this->id;
     }
 
+    public function __toString(): string
+    {
+        return $this->movie->getTitle() . ' (' . $this->movie->getReleaseDate()->format('Y') . ')' . ' - ' . $this->date_created->format('Y-m-d');
+    }
+
     public function getDateCreated(): ?\DateTimeInterface
     {
         return $this->date_created;

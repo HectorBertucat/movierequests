@@ -39,6 +39,11 @@ class Movie
         $this->requests = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->title . ' (' . $this->release_date->format('Y') . ')';
+    }
+
     public function getId(): ?int
     {
         return $this->id;
