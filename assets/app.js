@@ -10,3 +10,9 @@ import './styles/app.scss';
 
 // start the Stimulus application
 import './bootstrap';
+import 'chart.js';
+import 'easing/browser-easing'
+import 'owl.carousel'
+import 'waypoints/lib/jquery.waypoints'
+import 'tempusdominus'
+import $ from 'jquery';

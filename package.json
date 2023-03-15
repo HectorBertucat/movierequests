@@ -23,5 +23,15 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "assert": "^2.0.0",
+        "buffer": "^6.0.3",
+        "chart.js": "^4.2.1",
+        "easing": "^1.2.1",
+        "jquery": "^3.6.4",
+        "owl.carousel": "^2.3.4",
+        "tempusdominus": "^5.7.0",
+        "waypoints": "^4.0.1"
     }
 }
