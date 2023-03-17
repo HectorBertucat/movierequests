@@ -19,6 +19,11 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+            logout:
+                path: app_logout
+                target: /login
+            custom_authenticator: App\Security\AppCustomAuthenticator
+            entry_point: form_login
         secured_area:
             form_login:
                 enable_csrf: true
