@@ -26,7 +26,7 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield TextField::new('email');
-        $roles = ['ROLE_ADMIN', 'ROLE_PILOT'];
+        $roles = ['ROLE_ADMIN', 'ROLE_USER'];
         yield ChoiceField::new('roles')
             ->setChoices(array_combine($roles, $roles))
             ->allowMultipleChoices()
