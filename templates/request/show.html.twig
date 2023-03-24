@@ -3,4 +3,5 @@
 {% block title %}Demande {{ request.movie.title }}{% endblock %}
 {% block body %}
     <h1>Film {{ request.movie.title }}</h1>
+    <p>Made by {{ request.madeBy.email }}</p>
 {% endblock %}

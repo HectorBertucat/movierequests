@@ -42,7 +42,7 @@ class RequestCrudController extends AbstractCrudController
                 ])
                 ->setFormTypeOption('data', 1),
 
-            ChoiceField::new('user')
+            AssociationField::new('madeBy'),
         ];
     }
 
