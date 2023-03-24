@@ -14,15 +14,25 @@ class RequestController extends AbstractController
     #[Route('/requests', name: 'app_request')]
     public function index(Request $request, RequestRepository $requestRepository): Response
     {
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $requestRepository->getRequestPaginator($offset);
+
+        if ($isAdmin) {
+            // if admin, only get pending requests
+            $paginator = $requestRepository->getRequestPaginator($offset, null, 1);
+        } else {
+            // else get requests of user
+            $paginator = $requestRepository->getRequestPaginator($offset, $this->getUser());
+        }
 
         $requests = $requestRepository->findAll();
 
         return $this->render('request/index.html.twig', [
-            'requests' => $paginator,
-            'previous' => $offset - RequestRepository::PAGINATOR_PER_PAGE,
-            'next' => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
+            'requests'    => $paginator,
+            'isAdmin'       => $isAdmin,
+            'previous'      => $offset - RequestRepository::PAGINATOR_PER_PAGE,
+            'next'          => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
         ]);
     }
 
@@ -30,8 +40,7 @@ class RequestController extends AbstractController
     public function show($id, RequestRepository $requestRepository): Response
     {
         $request = $requestRepository->find($id);
-        $roles = $this->getUser()->getRoles();
-        $isAdmin = in_array('ROLE_ADMIN', $roles);
+        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
 
         return $this->render('request/show.html.twig', [
             'request' => $request,

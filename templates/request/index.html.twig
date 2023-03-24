@@ -10,8 +10,13 @@
 
     <div class="example-wrapper">
 
-        For each request, you can see the name of the movie.
-        {{ requests|length }} request(s) found.
+        {% if isAdmin %}
+            {% set type = 'Pending' %}
+        {% else %}
+            {% set type = 'My' %}
+        {% endif %}
+
+        <h1>{{ type }} request(s)</h1>
 
         {% for request in requests %}
             <div>

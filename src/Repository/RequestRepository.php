@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Request;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -19,21 +20,41 @@ class RequestRepository extends ServiceEntityRepository
 {
 
     public const PAGINATOR_PER_PAGE = 5;
+    public const NB_LAST_REQUESTS = 5;
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Request::class);
     }
 
-    public function getRequestPaginator(int $offset): Paginator
+    public function getRequestPaginator(int $offset, User $user = null, int $status = null): Paginator
     {
         $query = $this->createQueryBuilder('r')
-            ->orderBy('r.id', 'ASC')
+            ->orderBy('r.status', 'ASC')
             ->setFirstResult($offset)
-            ->setMaxResults(self::PAGINATOR_PER_PAGE)
-            ->getQuery();
+            ->setMaxResults(self::PAGINATOR_PER_PAGE);
+
+        if ($user != null) {
+            $query->andWhere('r.madeBy = ' . $user->getId());
+        }
+
+        if ($status =! null) {
+            $query->andWhere('r.status = ' . $status);
+        }
+
+        $query->getQuery();
 
         return new Paginator($query);
+    }
+
+        public function getLastAcceptedRequests(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.date_fullfilled', 'DESC')
+            ->andWhere('r.status = 2')
+            ->setMaxResults(self::NB_LAST_REQUESTS)
+            ->getQuery()
+            ->getResult();
     }
 
     public function save(Request $entity, bool $flush = false): void
