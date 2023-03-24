@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\RequestRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,9 +30,34 @@ class RequestController extends AbstractController
     public function show($id, RequestRepository $requestRepository): Response
     {
         $request = $requestRepository->find($id);
+        $roles = $this->getUser()->getRoles();
+        $isAdmin = in_array('ROLE_ADMIN', $roles);
 
         return $this->render('request/show.html.twig', [
             'request' => $request,
+            'isAdmin' => $isAdmin,
         ]);
+    }
+
+    #[Route('/requests/{id}/accept', name: 'app_request_accept')]
+    public function accept($id, RequestRepository $requestRepository, EntityManagerInterface $entityManager): Response
+    {
+        $request = $requestRepository->find($id);
+        $request->setStatus(2);
+        $entityManager->persist($request);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_request');
+    }
+
+    #[Route('/requests/{id}/refuse', name: 'app_request_refuse')]
+    public function refuse($id, RequestRepository $requestRepository, EntityManagerInterface $entityManager): Response
+    {
+        $request = $requestRepository->find($id);
+        $request->setStatus(3);
+        $entityManager->persist($request);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_request');
     }
 }
