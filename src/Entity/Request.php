@@ -27,6 +27,10 @@ class Request
     #[ORM\JoinColumn(nullable: false)]
     private ?Movie $movie = null;
 
+    #[ORM\ManyToOne(inversedBy: 'requests')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $madeBy = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,6 +85,18 @@ class Request
     public function setMovie(?Movie $movie): self
     {
         $this->movie = $movie;
+
+        return $this;
+    }
+
+    public function getMadeBy(): ?User
+    {
+        return $this->madeBy;
+    }
+
+    public function setMadeBy(?User $madeBy): self
+    {
+        $this->madeBy = $madeBy;
 
         return $this;
     }

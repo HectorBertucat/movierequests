@@ -40,7 +40,9 @@ class RequestCrudController extends AbstractCrudController
                     'Complétée' => 2,
                     'Refusée' => 3,
                 ])
-                ->setFormTypeOption('data', 1)
+                ->setFormTypeOption('data', 1),
+
+            ChoiceField::new('user')
         ];
     }
 

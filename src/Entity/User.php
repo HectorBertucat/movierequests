@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,9 +35,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $active = null;
 
+    #[ORM\OneToMany(mappedBy: 'madeBy', targetEntity: Request::class)]
+    private Collection $requests;
+
+    public function __construct()
+    {
+        $this->requests = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return $this->email;
     }
 
     public function getEmail(): ?string
@@ -111,6 +126,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Request>
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests->add($request);
+            $request->setMadeBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getMadeBy() === $this) {
+                $request->setMadeBy(null);
+            }
+        }
 
         return $this;
     }
