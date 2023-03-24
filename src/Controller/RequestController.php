@@ -24,4 +24,14 @@ class RequestController extends AbstractController
             'next' => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
         ]);
     }
+
+    #[Route('/requests/{id}', name: 'app_request_show')]
+    public function show($id, RequestRepository $requestRepository): Response
+    {
+        $request = $requestRepository->find($id);
+
+        return $this->render('request/show.html.twig', [
+            'request' => $request,
+        ]);
+    }
 }

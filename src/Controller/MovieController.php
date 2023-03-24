@@ -24,4 +24,14 @@ class MovieController extends AbstractController
             'next' => min(count($movies), $offset + MovieRepository::PAGINATOR_PER_PAGE),
         ]);
     }
+
+    #[Route('/movies/{id}', name: 'app_movie_show')]
+    public function show($id, MovieRepository $movieRepository): Response
+    {
+        $movie = $movieRepository->find($id);
+
+        return $this->render('movie/show.html.twig', [
+            'movie' => $movie,
+        ]);
+    }
 }

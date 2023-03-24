@@ -15,7 +15,7 @@
 
         {% for request in requests %}
             <div>
-                <h2>{{ request.movie.title }} ({{ request.dateCreated | date('d/m/Y') }})</h2>
+                <h2><a href="{{ path('app_request_show', {id: request.id}) }}">{{ request.movie.title }} ({{ request.dateCreated | date('d/m/Y') }})</a></h2>
             </div>
         {% endfor %}
 
