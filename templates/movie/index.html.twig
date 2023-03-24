@@ -9,12 +9,23 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/hectorbertucat/Documents/Études/Alternance/3IL/Cours/I2/Frameworks/movierequests/src/Controller/MovieController.php'|file_link(0) }}">src/Controller/MovieController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/hectorbertucat/Documents/Études/Alternance/3IL/Cours/I2/Frameworks/movierequests/templates/movie/index.html.twig'|file_link(0) }}">templates/movie/index.html.twig</a></code></li>
-    </ul>
+    For each movie, you can see the title, the year of release.
+    {{ movies|length }} movies found.
+
+    {% for movie in movies %}
+        <div>
+            <h2>{{ movie.title }}</h2>
+            <p>{{ movie.releaseDate | date('Y') }}</p>
+        </div>
+    {% endfor %}
+
+    {% if previous >= 0 %}
+        <a href="{{ path('app_movie', { offset: previous }) }}">Previous</a>
+    {% endif %}
+
+    {% if next < movies|length %}
+        <a href="{{ path('app_movie', { offset: next }) }}">Next</a>
+    {% endif %}
 </div>
 {% endblock %}
