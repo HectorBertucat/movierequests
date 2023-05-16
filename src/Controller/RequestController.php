@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RequestController extends AbstractController
 {
-    #[Route('/requests', name: 'app_request')]
+    #[Route('/', name: 'app_request')]
     public function index(Request $request, RequestRepository $requestRepository): Response
     {
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
