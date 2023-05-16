@@ -38,6 +38,16 @@ class RequestController extends AbstractController
         ]);
     }
 
+    #[Route('/request/make', name: 'app_request_make')]
+    public function makeRequest(RequestRepository $requestRepository): Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('request/make.html.twig', [
+
+        ]);
+    }
+
     #[Route('/requests/{id}', name: 'app_request_show')]
     public function show($id, RequestRepository $requestRepository): Response
     {
