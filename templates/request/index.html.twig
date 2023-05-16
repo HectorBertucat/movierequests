@@ -16,6 +16,8 @@
             {% set type = 'My' %}
         {% endif %}
 
+        {% include 'request/_latest.html.twig' with latestApprovedRequest %}
+
         <h1>{{ type }} request(s)</h1>
 
         {% for request in requests %}

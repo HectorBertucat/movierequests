@@ -1,0 +1,4 @@
+<h1>Latest added movies</h1>
+{% for request in latestApprovedRequest %}
+    <h2>{{ request.movie.title }}</h2>
+{% endfor %}

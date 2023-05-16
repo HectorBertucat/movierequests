@@ -15,6 +15,7 @@ class RequestController extends AbstractController
     public function index(Request $request, RequestRepository $requestRepository): Response
     {
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+        $latestApprovedRequest = $requestRepository->getLastAcceptedRequests();
 
         $offset = max(0, $request->query->getInt('offset', 0));
 
@@ -29,10 +30,11 @@ class RequestController extends AbstractController
         $requests = $requestRepository->findAll();
 
         return $this->render('request/index.html.twig', [
-            'requests'    => $paginator,
-            'isAdmin'       => $isAdmin,
-            'previous'      => $offset - RequestRepository::PAGINATOR_PER_PAGE,
-            'next'          => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
+            'requests'              => $paginator,
+            'latestApprovedRequest' => $latestApprovedRequest,
+            'isAdmin'               => $isAdmin,
+            'previous'              => $offset - RequestRepository::PAGINATOR_PER_PAGE,
+            'next'                  => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
         ]);
     }
 
