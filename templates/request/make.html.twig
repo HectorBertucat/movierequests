@@ -3,20 +3,14 @@
 {% block title %}Hello RequestController!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
-    <div class="example-wrapper">
-        <input type="text">
-        <button id="searchMovie">Search</button>
+    <div class="container-fluid pt-4 px-4">
+        <div class="col-sm-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                {{ form_start(requestForm) }}
+                {{ form_row(requestForm.movie) }}
+                <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Create Request</button>
+                {{ form_end(requestForm) }}
+            </div>
+        </div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-
-    </script>
 {% endblock %}

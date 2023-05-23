@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Form\RequestFormType;
+use App\Repository\MovieRepository;
 use App\Repository\RequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,15 +25,29 @@ class RequestController extends AbstractController
 
         $offset = max(0, $request->query->getInt('offset', 0));
 
+        $requests = $requestRepository->findAll();
+        $totalMovies = count($requests);
+
         if ($isAdmin) {
             // if admin, only get pending requests
             $paginator = $requestRepository->getRequestPaginator($offset, null, 1);
+
+            // if paginator is empty, set offset to 0
+            if ($offset > $totalMovies - RequestRepository::PAGINATOR_PER_PAGE) {
+                $paginator = $requestRepository->getRequestPaginator(0);
+                $offset = 0;
+            }
+
         } else {
             // else get requests of user
             $paginator = $requestRepository->getRequestPaginator($offset, $this->getUser());
-        }
 
-        $requests = $requestRepository->findAll();
+            // if paginator is empty, set offset to 0
+            if ($offset > $totalMovies - RequestRepository::PAGINATOR_PER_PAGE) {
+                $paginator = $requestRepository->getRequestPaginator(0);
+                $offset = 0;
+            }
+        }
 
         return $this->render('request/index.html.twig', [
             'requests'              => $paginator,
@@ -42,12 +58,28 @@ class RequestController extends AbstractController
     }
 
     #[Route('/request/make', name: 'app_request_make')]
-    public function makeRequest(RequestRepository $requestRepository): Response
+    public function makeRequest(Request $request, EntityManagerInterface $entityManager, MovieRepository $movieRepository): Response
     {
-        $user = $this->getUser();
+        $requestMovie = new \App\Entity\Request();
+        $form = $this->createForm(RequestFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestMovie->setMadeBy($this->getUser());
+            $requestMovie->setStatus(1);
+
+            $movie = $movieRepository->find($form->get('movie')->getData());
+            $requestMovie->setMovie($movie);
+            $requestMovie->setDateCreated(new \DateTime());
+
+            $entityManager->persist($requestMovie);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_request_show', ['id' => $requestMovie->getId()]);
+        }
 
         return $this->render('request/make.html.twig', [
-
+            'requestForm' => $form->createView(),
         ]);
     }
 
