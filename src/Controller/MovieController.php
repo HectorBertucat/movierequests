@@ -18,6 +18,15 @@ class MovieController extends AbstractController
 
         $movies = $movieRepository->findAll();
 
+        // get total number of movies
+        $totalMovies = count($movies);
+
+        // if paginator is empty, set offset to 0
+        if ($offset > $totalMovies - MovieRepository::PAGINATOR_PER_PAGE) {
+            $paginator = $movieRepository->getMoviePaginator(0);
+            $offset = 0;
+        }
+
         return $this->render('movie/index.html.twig', [
             'movies' => $paginator,
             'previous' => $offset - MovieRepository::PAGINATOR_PER_PAGE,
