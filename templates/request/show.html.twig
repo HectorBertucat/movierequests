@@ -5,7 +5,7 @@
     <h1>Film {{ request.movie.title }}</h1>
     <p>Made by {{ request.madeBy.email }}</p>
 
-    {% if isAdmin %}
+    {% if 'ROLE_ADMIN' in app.user.getroles()  %}
         <a href="{{ path('app_request_refuse', {id: request.id}) }}"><button>Refuser</button></a>
         <a href="{{ path('app_request_accept', {id: request.id}) }}"><button>Accepter</button></a>
     {% endif %}

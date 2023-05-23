@@ -14,6 +14,10 @@ class RequestController extends AbstractController
     #[Route('/', name: 'app_request')]
     public function index(Request $request, RequestRepository $requestRepository): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
         $latestApprovedRequest = $requestRepository->getLastAcceptedRequests();
 
@@ -32,7 +36,6 @@ class RequestController extends AbstractController
         return $this->render('request/index.html.twig', [
             'requests'              => $paginator,
             'latestApprovedRequest' => $latestApprovedRequest,
-            'isAdmin'               => $isAdmin,
             'previous'              => $offset - RequestRepository::PAGINATOR_PER_PAGE,
             'next'                  => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
         ]);
@@ -52,11 +55,14 @@ class RequestController extends AbstractController
     public function show($id, RequestRepository $requestRepository): Response
     {
         $request = $requestRepository->find($id);
-        $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+
+        // if request not found, redirect to request index
+        if (!$request) {
+            return $this->redirectToRoute('app_request');
+        }
 
         return $this->render('request/show.html.twig', [
             'request' => $request,
-            'isAdmin' => $isAdmin,
         ]);
     }
 
@@ -64,6 +70,12 @@ class RequestController extends AbstractController
     public function accept($id, RequestRepository $requestRepository, EntityManagerInterface $entityManager): Response
     {
         $request = $requestRepository->find($id);
+
+        // if request not found, redirect to request index
+        if (!$request) {
+            return $this->redirectToRoute('app_request');
+        }
+
         $request->setStatus(2);
         $entityManager->persist($request);
         $entityManager->flush();
@@ -75,6 +87,12 @@ class RequestController extends AbstractController
     public function refuse($id, RequestRepository $requestRepository, EntityManagerInterface $entityManager): Response
     {
         $request = $requestRepository->find($id);
+
+        // if request not found, redirect to request index
+        if (!$request) {
+            return $this->redirectToRoute('app_request');
+        }
+
         $request->setStatus(3);
         $entityManager->persist($request);
         $entityManager->flush();

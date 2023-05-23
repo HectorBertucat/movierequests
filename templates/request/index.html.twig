@@ -3,35 +3,59 @@
 {% block title %}Hello RequestController!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
 
-    <div class="example-wrapper">
+    {% if 'ROLE_ADMIN' in app.user.getroles()  %}
+        {% set type = 'Pending' %}
+    {% else %}
+        {% set type = 'My' %}
+    {% endif %}
 
-        {% if isAdmin %}
-            {% set type = 'Pending' %}
-        {% else %}
-            {% set type = 'My' %}
-        {% endif %}
+    {% include 'request/_latest.html.twig' with latestApprovedRequest %}
 
-        {% include 'request/_latest.html.twig' with latestApprovedRequest %}
-
-        <h1>{{ type }} request(s)</h1>
-
-        {% for request in requests %}
-            <div>
-                <h2><a href="{{ path('app_request_show', {id: request.id}) }}">{{ request.movie.title }} ({{ request.dateCreated | date('d/m/Y') }})</a></h2>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">{{ type }} request(s)</h6>
             </div>
-        {% endfor %}
-
-        {% if previous >= 0 %}
-            <a href="{{ path('app_request', { offset: previous }) }}">Previous</a>
-        {% endif %}
-
-        {% if next < requests|length %}
-            <a href="{{ path('app_request', { offset: next }) }}">Next</a>
-        {% endif %}
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-white">
+                            <th scope="col">Movie</th>
+                            <th scope="col">Made By</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for request in requests %}
+                        {% if request.status == '1' %}
+                            <tr>
+                                <td>{{ request.movie.title }}</td>
+                                <td>{{ request.madeBy.email }}</td>
+                                <td>{{ request.status }}</td>
+                                <td>
+                                    <a href="{{ path('app_request_show', {id: request.id}) }}" class="btn btn-sm btn-primary">View</a>
+                                    {% if 'ROLE_ADMIN' in app.user.getroles()  %}
+                                        <a href="{{ path('app_request_accept', {id: request.id}) }}" class="btn btn-sm btn-success">Approve</a>
+                                        <a href="{{ path('app_request_refuse', {id: request.id}) }}" class="btn btn-sm btn-danger">Reject</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+    {% if previous >= 0 %}
+        <a href="{{ path('app_request', { offset: previous }) }}">Previous</a>
+    {% endif %}
+
+    {% if next < requests|length %}
+        <a href="{{ path('app_request', { offset: next }) }}">Next</a>
+    {% endif %}
+
 {% endblock %}

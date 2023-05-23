@@ -1,4 +1,25 @@
-<h1>Latest added movies</h1>
-{% for request in latestApprovedRequest %}
-    <h2>{{ request.movie.title }}</h2>
-{% endfor %}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Latest approved requests</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                <tr class="text-white">
+                    <th scope="col">Movie</th>
+                    <th scope="col">Made By</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for request in latestApprovedRequest %}
+                    <tr>
+                        <td>{{ request.movie.title }}</td>
+                        <td>{{ request.madeBy.email }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

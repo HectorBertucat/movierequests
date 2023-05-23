@@ -8,24 +8,45 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">{{ movies|length }} movies(s)</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-white">
+                            <th scope="col">Title</th>
+                            <th scope="col">Release Date</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movie in movies %}
+                            <tr>
+                                <td>{{ movie.title }}</td>
+                                <td>{{ movie.releaseDate | date('Y') }}</td>
+                                <td><a type="button" class="btn btn-primary" href="{{ path('app_movie_show', {id: movie.id}) }}">Show</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <br>
+                {% if previous >= 0 %}
+                    <a type="button"  class="btn btn-primary m-2" href="{{ path('app_movie', { offset: previous }) }}">
+                        <i class="fa fa-arrow-circle-left me-2"></i>
+                        Previous
+                    </a>
+                {% endif %}
 
-    For each movie, you can see the title, the year of release.
-    {{ movies|length }} movies found.
-
-    {% for movie in movies %}
-        <div>
-            <h2><a href="{{ path('app_movie_show', {id: movie.id}) }}">{{ movie.title }}</a></h2>
-            <p>{{ movie.releaseDate | date('Y') }}</p>
-        </div>
-    {% endfor %}
-
-    {% if previous >= 0 %}
-        <a href="{{ path('app_movie', { offset: previous }) }}">Previous</a>
-    {% endif %}
-
-    {% if next < movies|length %}
-        <a href="{{ path('app_movie', { offset: next }) }}">Next</a>
-    {% endif %}
+                {% if next < movies|length %}
+                    <a type="button"  class="btn btn-primary m-2" href="{{ path('app_movie', { offset: next }) }}">
+                        Next
+                        <i class="fa fa-arrow-circle-right me-2"></i>
+                    </a>
+                {% endif %}
+            </div>
+    </div>
 </div>
 {% endblock %}

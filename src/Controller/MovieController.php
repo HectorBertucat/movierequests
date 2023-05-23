@@ -30,6 +30,11 @@ class MovieController extends AbstractController
     {
         $movie = $movieRepository->find($id);
 
+        // if movie not found, redirect to movie index
+        if (!$movie) {
+            return $this->redirectToRoute('app_movie');
+        }
+
         return $this->render('movie/show.html.twig', [
             'movie' => $movie,
         ]);
