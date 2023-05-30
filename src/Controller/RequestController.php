@@ -69,6 +69,12 @@ class RequestController extends AbstractController
             $requestMovie->setStatus(1);
 
             $movie = $movieRepository->find($form->get('movie')->getData());
+
+            // if movie already has a request, redirect to request index
+            if ($movie->getRequests()->count() > 0) {
+                return $this->redirectToRoute('app_request');
+            }
+
             $requestMovie->setMovie($movie);
             $requestMovie->setDateCreated(new \DateTime());
 
