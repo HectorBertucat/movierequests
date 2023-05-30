@@ -43,6 +43,5 @@ class UserCrudController extends AbstractCrudController
             ->setChoices(array_combine($roles, $roles))
             ->allowMultipleChoices()
             ->renderAsBadges();
-        yield TextField::new('password');
     }
 }
