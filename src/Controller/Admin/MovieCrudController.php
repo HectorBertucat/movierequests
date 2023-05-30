@@ -14,18 +14,6 @@ class MovieCrudController extends AbstractCrudController
         return Movie::class;
     }
 
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            TextField::new('external_id', 'External ID'),
-            TextField::new('title', 'Title'),
-            TextField::new('description', 'Description'),
-            TextField::new('rating', 'Rating'),
-            DateTimeField::new('release_date', 'Release date')
-                ->setFormTypeOption('data', new \DateTime())
-        ];
-    }
-
     /*
     public function configureFields(string $pageName): iterable
     {
