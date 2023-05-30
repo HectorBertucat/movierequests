@@ -53,6 +53,16 @@ class MovieRepository extends ServiceEntityRepository
         }
     }
 
+    public function getMoviesNotRequested(): array
+    {
+        $qb = $this->createQueryBuilder('m');
+
+        $qb->leftJoin('m.requests', 'r')
+            ->where($qb->expr()->isNull('r.id'));
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
 //     */
