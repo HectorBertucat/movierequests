@@ -33,7 +33,7 @@ class RequestController extends AbstractController
             $paginator = $requestRepository->getRequestPaginator($offset, null, 1);
 
             // if paginator is empty, set offset to 0
-            if ($offset > $totalMovies - RequestRepository::PAGINATOR_PER_PAGE) {
+            if ($offset > $totalMovies - RequestRepository::PAGINATOR_PER_PAGE - 1) {
                 $paginator = $requestRepository->getRequestPaginator(0);
                 $offset = 0;
             }

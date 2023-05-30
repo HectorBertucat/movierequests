@@ -22,7 +22,7 @@ class MovieController extends AbstractController
         $totalMovies = count($movies);
 
         // if paginator is empty, set offset to 0
-        if ($offset > $totalMovies - MovieRepository::PAGINATOR_PER_PAGE) {
+        if ($offset > $totalMovies - 1) {
             $paginator = $movieRepository->getMoviePaginator(0);
             $offset = 0;
         }
