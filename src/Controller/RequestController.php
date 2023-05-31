@@ -25,6 +25,10 @@ class RequestController extends AbstractController
 
         $offset = max(0, $request->query->getInt('offset', 0));
 
+        if ($offset % RequestRepository::PAGINATOR_PER_PAGE !== 0) {
+            $offset = $offset - ($offset % RequestRepository::PAGINATOR_PER_PAGE);
+        }
+
         $requests = $requestRepository->findAll();
         $totalMovies = count($requests);
 
@@ -50,7 +54,7 @@ class RequestController extends AbstractController
         }
 
         $currentPage = ($offset / RequestRepository::PAGINATOR_PER_PAGE) + 1;
-        $totalPages = count($paginator) -1;
+        $totalPages = count($paginator);
 
         return $this->render('request/index.html.twig', [
             'requests'              => $paginator,
@@ -59,6 +63,7 @@ class RequestController extends AbstractController
             'next'                  => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            'nbPerPage' => RequestRepository::PAGINATOR_PER_PAGE,
         ]);
     }
 

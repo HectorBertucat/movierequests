@@ -6,14 +6,14 @@
         {% if currentPage > 1 %}
             {% if currentPage > 2 %}
                 {% if currentPage > 3 %}
-                    <a type="button" class="btn btn-secondary">1</a>
+                    <a type="button" class="btn btn-secondary" href="{{ path(path, {offset: nbPerPage * currentPage * 0}) }}">1</a>
                     {% if currentPage > 4 %}
                         <a type="button" class="btn btn-secondary">...</a>
                     {% endif %}
                 {% endif %}
-                <a type="button" class="btn btn-secondary">{{ currentPage - 2 }}</a>
+                <a type="button" class="btn btn-secondary" href="{{ path(path, {offset: nbPerPage * (currentPage - 3)}) }}">{{ currentPage - 2 }}</a>
             {% endif %}
-            <a type="button" class="btn btn-secondary">{{ currentPage - 1 }}</a>
+            <a type="button" class="btn btn-secondary"href="{{ path(path, {offset: nbPerPage * (currentPage - 2)}) }}" >{{ currentPage - 1 }}</a>
         {% endif %}
     {% else %}
         <a type="button" class="btn btn-secondary disabled">
@@ -25,14 +25,14 @@
 
     {% if currentPage < totalPages %}
         {% if currentPage + 1 <= totalPages %}
-            <a type="button" class="btn btn-secondary">{{ currentPage + 1 }}</a>
+            <a type="button" class="btn btn-secondary" href="{{ path(path, {offset: nbPerPage * currentPage}) }}">{{ currentPage + 1 }}</a>
             {% if currentPage + 2 <= totalPages %}
-                <a type="button" class="btn btn-secondary">{{ currentPage + 2 }}</a>
+                <a type="button" class="btn btn-secondary" href="{{ path(path, {offset: nbPerPage * (currentPage + 1)}) }}">{{ currentPage + 2 }}</a>
                 {% if currentPage + 3 <= totalPages %}
                     {% if currentPage + 4 <= totalPages %}
                         <a type="button" class="btn btn-secondary">...</a>
                     {% endif %}
-                    <a type="button" class="btn btn-secondary">{{ totalPages }}</a>
+                    <a type="button" class="btn btn-secondary" href="{{ path(path, {offset: nbPerPage * (totalPages - 1)}) }}">{{ totalPages }}</a>
                 {% endif %}
             {% endif %}
         {% endif %}

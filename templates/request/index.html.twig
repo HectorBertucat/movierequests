@@ -48,17 +48,8 @@
                 </table>
                 <br>
                 {% set path = 'app_request' %}
-                {% include '_paginator.html.twig' with {previous, next, currentPage, totalPages, path} %}
+                {% include '_paginator.html.twig' with {previous, next, currentPage, totalPages, path, nbPerPage} %}
             </div>
         </div>
     </div>
-
-    {% if previous >= 0 %}
-        <a href="{{ path('app_request', { offset: previous }) }}">Previous</a>
-    {% endif %}
-
-    {% if next < requests|length %}
-        <a href="{{ path('app_request', { offset: next }) }}">Next</a>
-    {% endif %}
-
 {% endblock %}

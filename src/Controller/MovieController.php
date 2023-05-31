@@ -14,6 +14,12 @@ class MovieController extends AbstractController
     public function index(Request $request, MovieRepository $movieRepository): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
+
+        // if offset is not dividable by PAGE_PER_PAGE, set offset to the previous dividable number
+        if ($offset % MovieRepository::PAGINATOR_PER_PAGE !== 0) {
+            $offset = $offset - ($offset % MovieRepository::PAGINATOR_PER_PAGE);
+        }
+
         $paginator = $movieRepository->getMoviePaginator($offset);
 
         $movies = $movieRepository->findAll();
@@ -36,6 +42,7 @@ class MovieController extends AbstractController
             'next' => min(count($movies), $offset + MovieRepository::PAGINATOR_PER_PAGE),
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            'nbPerPage' => MovieRepository::PAGINATOR_PER_PAGE,
         ]);
     }
 
