@@ -27,10 +27,15 @@ class MovieController extends AbstractController
             $offset = 0;
         }
 
+        $currentPage = ($offset / MovieRepository::PAGINATOR_PER_PAGE) + 1;
+        $totalPages = ceil($totalMovies / MovieRepository::PAGINATOR_PER_PAGE);
+
         return $this->render('movie/index.html.twig', [
             'movies' => $paginator,
             'previous' => $offset - MovieRepository::PAGINATOR_PER_PAGE,
             'next' => min(count($movies), $offset + MovieRepository::PAGINATOR_PER_PAGE),
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
         ]);
     }
 

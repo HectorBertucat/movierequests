@@ -46,6 +46,9 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <br>
+                {% set path = 'app_request' %}
+                {% include '_paginator.html.twig' with {previous, next, currentPage, totalPages, path} %}
             </div>
         </div>
     </div>

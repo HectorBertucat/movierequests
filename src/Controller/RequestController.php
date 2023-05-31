@@ -49,11 +49,16 @@ class RequestController extends AbstractController
             }
         }
 
+        $currentPage = ($offset / RequestRepository::PAGINATOR_PER_PAGE) + 1;
+        $totalPages = count($paginator) -1;
+
         return $this->render('request/index.html.twig', [
             'requests'              => $paginator,
             'latestApprovedRequest' => $latestApprovedRequest,
             'previous'              => $offset - RequestRepository::PAGINATOR_PER_PAGE,
             'next'                  => min(count($requests), $offset + RequestRepository::PAGINATOR_PER_PAGE),
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
         ]);
     }
 

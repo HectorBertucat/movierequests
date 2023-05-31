@@ -28,19 +28,8 @@
                     </tbody>
                 </table>
                 <br>
-                {% if previous >= 0 %}
-                    <a type="button"  class="btn btn-primary m-2" href="{{ path('app_movie', { offset: previous }) }}">
-                        <i class="fa fa-arrow-circle-left me-2"></i>
-                        Previous
-                    </a>
-                {% endif %}
-
-                {% if next < movies|length %}
-                    <a type="button"  class="btn btn-primary m-2" href="{{ path('app_movie', { offset: next }) }}">
-                        Next
-                        <i class="fa fa-arrow-circle-right me-2"></i>
-                    </a>
-                {% endif %}
+                {% set path = 'app_movie' %}
+                {% include '_paginator.html.twig' with {previous, next, currentPage, totalPages, path} %}
             </div>
     </div>
 </div>

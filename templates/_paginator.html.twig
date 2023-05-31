@@ -1,0 +1,47 @@
+<div class="btn-group me-2">
+    {% if previous >= 0 %}
+        <a type="button" class="btn btn-secondary " href="{{ path(path, { offset: previous }) }}">
+            <i class="fa fa-arrow-circle-left me-2"></i> Previous
+        </a>
+        {% if currentPage > 1 %}
+            {% if currentPage > 2 %}
+                {% if currentPage > 3 %}
+                    <a type="button" class="btn btn-secondary">1</a>
+                    {% if currentPage > 4 %}
+                        <a type="button" class="btn btn-secondary">...</a>
+                    {% endif %}
+                {% endif %}
+                <a type="button" class="btn btn-secondary">{{ currentPage - 2 }}</a>
+            {% endif %}
+            <a type="button" class="btn btn-secondary">{{ currentPage - 1 }}</a>
+        {% endif %}
+    {% else %}
+        <a type="button" class="btn btn-secondary disabled">
+            <i class="fa fa-arrow-circle-left me-2"></i> Previous
+        </a>
+    {% endif %}
+
+    <a type="button" class="btn btn-primary">{{ currentPage}}</a>
+
+    {% if currentPage < totalPages %}
+        {% if currentPage + 1 <= totalPages %}
+            <a type="button" class="btn btn-secondary">{{ currentPage + 1 }}</a>
+            {% if currentPage + 2 <= totalPages %}
+                <a type="button" class="btn btn-secondary">{{ currentPage + 2 }}</a>
+                {% if currentPage + 3 <= totalPages %}
+                    {% if currentPage + 4 <= totalPages %}
+                        <a type="button" class="btn btn-secondary">...</a>
+                    {% endif %}
+                    <a type="button" class="btn btn-secondary">{{ totalPages }}</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        <a type="button" class="btn btn-secondary" href="{{ path(path, { offset: next }) }}">
+            Next <i class="fa fa-arrow-circle-right me-2"></i>
+        </a>
+    {% else %}
+        <a type="button" class="btn btn-secondary disabled">
+            Next <i class="fa fa-arrow-circle-right me-2"></i>
+        </a>
+    {% endif %}
+</div>
