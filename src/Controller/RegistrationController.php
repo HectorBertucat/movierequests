@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordFormType;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,6 +49,45 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/resetPassword', name: 'app_resetPassword')]
+    public function resetPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user = $this->getUser();
+        $form = $this->createForm(ChangePasswordFormType::class, $user);
+        $form->handleRequest($request);
+
+        $error = null;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // check if login is valid
+            if ($userPasswordHasher->isPasswordValid($user, $form->get('oldPassword')->getData())) {
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('newPassword')->getData()
+                    )
+                );
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_resetPassword');
+            } else {
+                $error = 'Invalid password';
+            }
+        }
+
+        return $this->render('registration/resetPassword.html.twig', [
+            'changePasswordForm' => $form->createView(),
+            'error' => $error
         ]);
     }
 }
