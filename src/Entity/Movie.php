@@ -34,6 +34,9 @@ class Movie
     #[ORM\OneToMany(mappedBy: 'movie', targetEntity: Request::class)]
     private Collection $requests;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $hasImage = null;
+
     public function __construct()
     {
         $this->requests = new ArrayCollection();
@@ -135,6 +138,18 @@ class Movie
                 $request->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isHasImage(): ?bool
+    {
+        return $this->hasImage;
+    }
+
+    public function setHasImage(?bool $hasImage): self
+    {
+        $this->hasImage = $hasImage;
 
         return $this;
     }

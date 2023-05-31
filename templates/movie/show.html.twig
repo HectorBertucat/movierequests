@@ -3,5 +3,15 @@
 {% block title %}Film {{ movie.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ movie.title }}</h1>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <h1 class="display-1">{{ movie.title }}</h1>
+            <h1 class="display-6 text-muted">({{ movie.releaseDate|date("Y") }})</h1>
+        </div>
+    </div>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            Test
+        </div>
+    </div>
 {% endblock %}
