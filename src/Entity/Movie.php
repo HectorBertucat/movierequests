@@ -34,8 +34,8 @@ class Movie
     #[ORM\OneToMany(mappedBy: 'movie', targetEntity: Request::class)]
     private Collection $requests;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $hasImage = null;
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
+    private ?bool $hasImage = false;
 
     public function __construct()
     {
