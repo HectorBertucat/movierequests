@@ -78,40 +78,61 @@ class MovieController extends AbstractController
         $form = $this->createForm(MovieImageFormType::class, $movie);
         $form->handleRequest($request);
 
-        $error = null;
+        $errors = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $moviePoster = $form->get('imageFile')->getData();
 
             if($moviePoster) {
-                $originalFilename = pathinfo($moviePoster->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $movie->getId() .".".$moviePoster->guessExtension();
-
-                try {
-                    $moviePoster->move(
-                        $this->getParameter('movie_poster_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $error = $e->getMessage();
+                // make sure the file is a jpg image
+                if ($moviePoster->guessExtension() !== 'jpg') {
+                    $errors[] = "Only jpg images are allowed";
                 }
 
-                $movie->setHasImage(true);
+                // make sure the file is not bigger than 3MB
+                if ($moviePoster->getSize() > 3 * 1024 * 1024) {
+                    $errors[] = "File size cannot be bigger than 3MB";
+                }
+
+                // aspect ratio must be 2:3
+                $imageSize = getimagesize($moviePoster);
+                if ($imageSize[0] / $imageSize[1] !== 2 / 3) {
+                    $errors[] = "Image aspect ratio must be 2:3";
+                }
+
+                // minimum width must be 500px
+                if ($imageSize[0] < 500) {
+                    $errors[] = "Image width must be at least 500px";
+                }
+
+                if (!$errors) {
+                    $newFilename = $movie->getId() .".".$moviePoster->guessExtension();
+
+                    try {
+                        $moviePoster->move(
+                            $this->getParameter('movie_poster_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        $errors = $e->getMessage();
+                    }
+
+                    $movie->setHasImage(true);
+
+                    $entityManager->persist($movie);
+                    $entityManager->flush();
+
+                    return $this->redirectToRoute('app_movie_show', [
+                        'id' => $movie->getId(),
+                    ]);
+                }
             }
-
-            $entityManager->persist($movie);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_movie_show', [
-                'id' => $movie->getId(),
-                'error' => $error,
-            ]);
         }
 
         return $this->render('movie/edit.html.twig', [
             'addImageForm' => $form->createView(),
             'movie' => $movie,
-            'error' => $error
+            'errors' => $errors
         ]);
     }
 }

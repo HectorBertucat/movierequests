@@ -8,6 +8,14 @@
             <h1 class="display-1">{{ movie.title }}</h1>
             {{ form_start(addImageForm) }}
             {{ form_row(addImageForm.imageFile) }}
+            {% if errors %}
+                <div class="alert alert-danger">
+                    {% for error in errors %}
+                        {{ error }}
+                        <br>
+                    {% endfor %}
+                </div>
+            {% endif %}
                 <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Upload</button>
             {{ form_end(addImageForm) }}
         </div>
