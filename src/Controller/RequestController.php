@@ -39,7 +39,6 @@ class RequestController extends AbstractController
 
             // if admin, only get pending requests
             $paginator = $requestRepository->getRequestPaginator($offset, $userId);
-            var_dump(count($paginator));
 
             // if paginator is empty, set offset to 0
             if ($offset > $totalRequests - 1) {

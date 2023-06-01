@@ -6,7 +6,7 @@
     {% include 'movie/_detail.html.twig' with {movie} %}
     <div class="container-fluid pt-4 px-4">
         <div class="bg-secondary text-center rounded p-4">
-            Test
+            {{ movie.description }}
         </div>
     </div>
 {% endblock %}
