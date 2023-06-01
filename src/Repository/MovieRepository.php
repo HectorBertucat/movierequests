@@ -17,7 +17,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class MovieRepository extends ServiceEntityRepository
 {
-    public const PAGINATOR_PER_PAGE = 5;
+    public const PAGINATOR_PER_PAGE = 4;
 
     public function __construct(ManagerRegistry $registry)
     {

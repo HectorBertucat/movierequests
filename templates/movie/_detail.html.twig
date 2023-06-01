@@ -3,9 +3,14 @@
         <a href="{{ path('app_movie_show', {id: movie.id}) }}" ><h1 class="display-3">{{ movie.title }}</h1></a>
         <h1 class="display-6 text-muted">({{ movie.releaseDate|date("Y") }})</h1>
         {% if movie.hasImage %}
-            <div class="bg-secondary text-center rounded p-4">
+            <div class="text-center rounded p-4">
                 <img src="{{ asset('uploads/movie_posters/' ~ movie.id ~ '.jpg') }}" alt="{{ movie.title }} poster" class="w-25 img-fluid">
             </div>
         {% endif %}
+
+        <h1 class="display-6">Synopsis</h1>
+        <div class="text-center">
+            {{ movie.description }}
+        </div>
     </div>
 </div>

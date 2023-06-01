@@ -31,8 +31,6 @@ class RequestController extends AbstractController
             $offset = $offset - ($offset % RequestRepository::PAGINATOR_PER_PAGE);
         }
 
-
-
         if ($isAdmin) {
             $requests = $requestRepository->findBy(['status' => 1]);
             $totalRequests = count($requests);
