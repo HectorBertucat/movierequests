@@ -51,8 +51,8 @@ class RequestRepository extends ServiceEntityRepository
         public function getLastAcceptedRequests(): array
     {
         return $this->createQueryBuilder('r')
-            ->orderBy('r.date_fullfilled', 'DESC')
             ->andWhere('r.status = 2')
+            ->orderBy('r.date_created', 'DESC')
             ->setMaxResults(self::NB_LAST_REQUESTS)
             ->getQuery()
             ->getResult();

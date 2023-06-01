@@ -14,7 +14,7 @@
                 <tbody>
                 {% for request in latestApprovedRequest %}
                     <tr>
-                        <td>{{ request.movie.title }}</td>
+                        <td><a href="{{ path('app_movie_show', {id: request.movie.id}) }}">{{ request.movie.title }}</a></td>
                         <td>{{ request.madeBy.email }}</td>
                     </tr>
                 {% endfor %}
