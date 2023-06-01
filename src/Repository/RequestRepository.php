@@ -27,19 +27,20 @@ class RequestRepository extends ServiceEntityRepository
         parent::__construct($registry, Request::class);
     }
 
-    public function getRequestPaginator(int $offset, User $user = null, int $status = null): Paginator
+    public function getRequestPaginator(int $offset, $userId): Paginator
     {
         $query = $this->createQueryBuilder('r')
-            ->orderBy('r.status', 'ASC')
+            ->orderBy('r.date_created', 'ASC')
             ->setFirstResult($offset)
             ->setMaxResults(self::PAGINATOR_PER_PAGE);
 
-        if ($user != null) {
-            $query->andWhere('r.madeBy = ' . $user->getId());
-        }
+        $user = $this->getEntityManager()->getRepository(User::class)->find($userId);
 
-        if ($status =! null) {
-            $query->andWhere('r.status = ' . $status);
+        // if user id admin, get all pending
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            $query->andWhere('r.status = 1');
+        } else {
+            $query->andWhere('r.madeBy = ' . $userId);
         }
 
         $query->getQuery();

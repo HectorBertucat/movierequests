@@ -20,6 +20,8 @@ class RequestController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $userId = $this->getUser()->getId();
+
         $isAdmin = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
         $latestApprovedRequest = $requestRepository->getLastAcceptedRequests();
 
@@ -29,32 +31,38 @@ class RequestController extends AbstractController
             $offset = $offset - ($offset % RequestRepository::PAGINATOR_PER_PAGE);
         }
 
-        $requests = $requestRepository->findAll();
-        $totalMovies = count($requests);
+
 
         if ($isAdmin) {
+            $requests = $requestRepository->findBy(['status' => 1]);
+            $totalRequests = count($requests);
+
             // if admin, only get pending requests
-            $paginator = $requestRepository->getRequestPaginator($offset, null, 1);
+            $paginator = $requestRepository->getRequestPaginator($offset, $userId);
+            var_dump(count($paginator));
 
             // if paginator is empty, set offset to 0
-            if ($offset > $totalMovies - 1) {
-                $paginator = $requestRepository->getRequestPaginator(0);
+            if ($offset > $totalRequests - 1) {
+                $paginator = $requestRepository->getRequestPaginator(0, $userId);
                 $offset = 0;
             }
 
         } else {
+            $requests = $requestRepository->findBy(['madeBy' => $userId]);
+            $totalRequests = count($requests);
+
             // else get requests of user
-            $paginator = $requestRepository->getRequestPaginator($offset, $this->getUser());
+            $paginator = $requestRepository->getRequestPaginator($offset, $userId);
 
             // if paginator is empty, set offset to 0
-            if ($offset > $totalMovies - 1) {
-                $paginator = $requestRepository->getRequestPaginator(0);
+            if ($offset > $totalRequests - 1) {
+                $paginator = $requestRepository->getRequestPaginator(0, $userId);
                 $offset = 0;
             }
         }
 
         $currentPage = ($offset / RequestRepository::PAGINATOR_PER_PAGE) + 1;
-        $totalPages = count($paginator);
+        $totalPages = ceil($totalRequests / RequestRepository::PAGINATOR_PER_PAGE);
 
         return $this->render('request/index.html.twig', [
             'requests'              => $paginator,
@@ -109,8 +117,15 @@ class RequestController extends AbstractController
             return $this->redirectToRoute('app_request');
         }
 
+        if ($request->getStatus() != 1) {
+            return $this->redirectToRoute('app_request');
+        }
+
+        $movie = $request->getMovie();
+
         return $this->render('request/show.html.twig', [
             'request' => $request,
+            'movie' => $movie,
         ]);
     }
 
