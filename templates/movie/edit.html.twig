@@ -20,9 +20,12 @@
             {{ form_end(addImageForm) }}
         </div>
     </div>
-    <div class="container-fluid pt-4 px-4">
-        <div class="bg-secondary text-center rounded p-4">
-            Test
+    {% if movie.hasImage %}
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-secondary text-center rounded p-4">
+                <h1 class="display-6">Current Poster</h1>
+                <img src="{{ asset('uploads/movie_posters/' ~ movie.id ~ '.jpg') }}" alt="{{ movie.title }} poster" class="w-25 img-fluid">
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

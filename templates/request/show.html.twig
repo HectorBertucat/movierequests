@@ -1,12 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Demande {{ request.movie.title }}{% endblock %}
-{% block body %}
-    <h1>Film {{ request.movie.title }}</h1>
-    <p>Made by {{ request.madeBy.email }}</p>
+{% block title %}Demande pour {{ request.movie.title }}{% endblock %}
 
-    {% if 'ROLE_ADMIN' in app.user.getroles()  %}
-        <a href="{{ path('app_request_refuse', {id: request.id}) }}"><button>Refuser</button></a>
-        <a href="{{ path('app_request_accept', {id: request.id}) }}"><button>Accepter</button></a>
-    {% endif %}
+{% block body %}
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <h1 class="display-1">Pending Request</h1>
+            <h1 class="display-6 text-muted">Made by {{ request.madeBy }}</h1>
+            <br>
+            {% if 'ROLE_ADMIN' in app.user.getroles()  %}
+                <a type="button" href="{{ path('app_request_refuse', {id: request.id}) }}" class="btn-lg btn-danger">Decline</a>
+                <a type="button" href="{{ path('app_request_accept', {id: request.id}) }}" class="btn-lg btn-success">Accept</a>
+            {% endif %}
+        </div>
+    </div>
+    {% include 'movie/_detail.html.twig' with {movie} %}
 {% endblock %}
