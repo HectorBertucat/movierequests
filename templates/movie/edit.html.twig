@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film {{ movie.title }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <h1 class="display-1">{{ movie.title }}</h1>
+            {{ form_start(addImageForm) }}
+            {{ form_row(addImageForm.imageFile) }}
+                <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Upload</button>
+            {{ form_end(addImageForm) }}
+        </div>
+    </div>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            Test
+        </div>
+    </div>
+{% endblock %}

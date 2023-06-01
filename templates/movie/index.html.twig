@@ -22,7 +22,10 @@
                             <tr>
                                 <td>{{ movie.title }}</td>
                                 <td>{{ movie.releaseDate | date('Y') }}</td>
-                                <td><a type="button" class="btn btn-primary" href="{{ path('app_movie_show', {id: movie.id}) }}">Show</a></td>
+                                <td>
+                                    <a type="button" class="btn btn-primary" href="{{ path('app_movie_show', {id: movie.id}) }}">Show</a>
+                                    <a type="button" class="btn btn-info" href="{{ path('app_movie_edit', {id: movie.id}) }}">Edit</a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
