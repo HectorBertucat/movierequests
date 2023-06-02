@@ -31,6 +31,13 @@ class RegistrationFormType extends AbstractType
                     ))
                 )
             ])
+            ->add('name', null, [
+                'constraints' => array(
+                    new NotBlank(array("message" => "Please provide a valid name")),
+                )
+            ])
+            ->add('firstname', null, [
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
